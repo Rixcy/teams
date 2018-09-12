@@ -10,6 +10,7 @@ import TurbolinksAdapter from 'vue-turbolinks'
 import VueResource from 'vue-resource'
 
 Vue.use(VueResource)
+Vue.use(TurbolinksAdapter)
 
 document.addEventListener('turbolinks:load', () => {
   Vue.http.headers.common['X-CSRF-Token'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -23,7 +24,6 @@ document.addEventListener('turbolinks:load', () => {
 
     const app = new Vue({
       el: element,
-      mixins: [TurbolinksAdapter],
       data: function() {
         return { team: team }
       },
@@ -38,6 +38,13 @@ document.addEventListener('turbolinks:load', () => {
         },
         removePlayer: function(index) {
           this.team.players_attributes.splice(index, 1)
+        },
+        saveTeam: function() {
+          this.$http.post('/teams', { team: this.team }).then(response => {
+            Turbolinks.visit(`/teams/${response.body.id}`)
+          }, response => {
+            console.log(response)
+          })
         }
       }
     })
