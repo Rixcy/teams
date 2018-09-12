@@ -3,11 +3,7 @@
   data: {
     team: team.to_json(except: [:created_at, :updated_at]),
     players_attributes: team.players.to_json(
-      except: [
-        :team_id,
-        :created_at,
-        :updated_at
-      ]
+      except: [:team_id,:created_at,:updated_at]
     ),
   } do %>
 
@@ -15,18 +11,33 @@
   <input type="text" v-model="team.name">
 
   <h4>Players</h4>
-  <table>
+  <table class="table">
     <thead>
       <tr>
         <th>ID</th>
-        <th>Name</th>
+        <th class="has-text-left">Name</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(player, index) in team.players_attributes">
-        <td>{{ index }}</td>
+      <tr
+        v-for="(player, index) in team.players_attributes"
+        v-bind:class="{ 'disabled-row': player._destroy == '1' }" >
+        <td v-cloak>
+          {{ player.id }}
+          <div v-if="player._destroy == '1'">
+            - Will be removed
+            <button v-on:click.prevent="undoRemove(index)">undo</button>
+          </div>
+        </td>
         <td><input type="text" v-model="player.name"></td>
-        <td><button v-on:click="removePlayer(index)">Remove</button></td>
+        <td>
+          <button
+            v-on:click="removePlayer(index)"
+            v-bind:disabled="player._destroy == '1'">
+            Remove
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -35,6 +46,5 @@
 
   <button v-on:click.prevent="saveTeam">Save team</button>
 
-  <% console %>
-
+  <% console if Rails.env == 'development' %>
 <% end %>

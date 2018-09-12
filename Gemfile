@@ -14,6 +14,7 @@ gem 'webpacker'
 gem 'jbuilder', '~> 2.5'
 gem 'foreman'
 gem 'turbolinks'
+gem 'rails-assets-bulma', source: 'https://rails-assets.org'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

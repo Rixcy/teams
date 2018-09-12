@@ -5,3 +5,11 @@ body {
 .roboto {
   font-family: 'Roboto Slab', serif;
 }
+
+.disabled-row {
+  background-color: red;
+}
+
+[v-cloak] {
+  display: none;
+}

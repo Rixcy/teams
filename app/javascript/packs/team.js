@@ -36,15 +36,35 @@ document.addEventListener('turbolinks:load', () => {
             _destroy: null,
           })
         },
+
         removePlayer: function(index) {
-          this.team.players_attributes.splice(index, 1)
+          let player = this.team.players_attributes[index]
+
+          if (player.id == null) {
+            this.team.players_attributes.splice(index, 1)
+          } else {
+            this.team.players_attributes[index]._destroy = "1"
+          }
         },
+
+        undoRemove: function(index) {
+          this.team.players_attributes[index]._destroy = null
+        },
+
         saveTeam: function() {
-          this.$http.post('/teams', { team: this.team }).then(response => {
-            Turbolinks.visit(`/teams/${response.body.id}`)
-          }, response => {
-            console.log(response)
-          })
+          if (this.team.id == null) {
+            this.$http.post('/teams', { team: this.team }).then(response => {
+              Turbolinks.visit(`/teams/${response.body.id}`)
+            }, response => {
+              console.log(response)
+            })
+          } else {
+            this.$http.put(`/teams/${this.team.id}`, { team: this.team }).then(response => {
+              Turbolinks.visit(`/teams/${response.body.id}`)
+            }, response => {
+              console.log(response)
+            })
+          }
         }
       }
     })
