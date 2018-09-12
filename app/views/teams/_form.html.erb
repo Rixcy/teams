@@ -1,0 +1,36 @@
+<%= content_tag :div,
+  id: "team-form",
+  data: {
+    team: team.to_json(except: [:created_at, :updated_at]),
+    players_attributes: team.players.to_json(
+      except: [
+        :team_id,
+        :created_at,
+        :updated_at
+      ]
+    ),
+  } do %>
+
+  <label>Team Name</label>
+  <input type="text" v-model="team.name">
+
+  <h4>Players</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(player, index) in team.players_attributes">
+        <td>{{ index }}</td>
+        <td><input type="text" v-model="player.name"></td>
+        <td><button v-on:click="removePlayer(index)">Remove</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button v-on:click.prevent="addPlayer">New player</button>
+
+<% end %>
