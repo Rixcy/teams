@@ -6,11 +6,12 @@
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
 import Vue from 'vue/dist/vue.esm'
+import TurbolinksAdapter from 'vue-turbolinks'
 import VueResource from 'vue-resource'
 
 Vue.use(VueResource)
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbolinks:load', () => {
   Vue.http.headers.common['X-CSRF-Token'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
   const element = document.getElementById("team-form")
 
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const app = new Vue({
       el: element,
+      mixins: [TurbolinksAdapter],
       data: function() {
         return { team: team }
       },
