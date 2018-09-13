@@ -1,6 +1,11 @@
-<h1>Editing Team</h1>
+<p id="notice"><%= notice %></p>
+
+<h2 class="title is-2">
+  Editing: <%= @team.name %>
+  <div class="is-pulled-right">
+    <%= link_to 'Show', @team, class: 'button is-primary' %>
+    <%= link_to 'Back', teams_path, class: 'button is-danger' %>
+  </div>
+</h1>
 
 <%= render 'form', team: @team %>
-
-<%= link_to 'Show', @team %> |
-<%= link_to 'Back', teams_path %>

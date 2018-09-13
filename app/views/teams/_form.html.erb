@@ -1,50 +1,59 @@
 <%= content_tag :div,
   id: "team-form",
   data: {
+    id: team.id,
     team: team.to_json(except: [:created_at, :updated_at]),
     players_attributes: team.players.to_json(
       except: [:team_id,:created_at,:updated_at]
     ),
   } do %>
 
-  <label>Team Name</label>
-  <input type="text" v-model="team.name">
+  <div class="field">
+    <label class="label">Team Name</label>
+    <div class="control">
+      <input class="input" type="text" v-model="team.name" placeholder="e.g. developers">
+    </div>
+  </div>
 
-  <h4>Players</h4>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th class="has-text-left">Name</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="(player, index) in team.players_attributes"
-        v-bind:class="{ 'disabled-row': player._destroy == '1' }" >
-        <td v-cloak>
-          {{ player.id }}
-          <div v-if="player._destroy == '1'">
-            - Will be removed
-            <button v-on:click.prevent="undoRemove(index)">undo</button>
-          </div>
-        </td>
-        <td><input type="text" v-model="player.name"></td>
-        <td>
-          <button
-            v-on:click="removePlayer(index)"
-            v-bind:disabled="player._destroy == '1'">
-            Remove
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="field">
+    <label class="label">Players</label>
+    <table class="table is-hoverable is-fullwidth">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th class="has-text-left">Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(player, index) in team.players_attributes"
+          v-bind:class="{ 'disabled-row': player._destroy == '1' }" >
+          <td v-cloak>
+            {{ player.id }}
+            <div v-if="player._destroy == '1'">
+              - Will be removed
+              <button v-on:click.prevent="undoRemove(index)">undo</button>
+            </div>
+          </td>
+          <td><input class="input is-small" type="text" v-model="player.name"></td>
+          <td>
+            <a
+              class="delete is-medium"
+              v-on:click="removePlayer(index)"
+              v-bind:disabled="player._destroy == '1'"></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <button v-on:click.prevent="addPlayer">New player</button>
-
-  <button v-on:click.prevent="saveTeam">Save team</button>
-
-  <% console if Rails.env == 'development' %>
+  <div class="field is-grouped">
+    <div class="control">
+      <button class="button is-info" v-on:click.prevent="addPlayer">New player</button>
+    </div>
+    <div class="control">
+      <button class="button is-info" v-on:click.prevent="saveTeam">Save team</button>
+    </div>
+  </div>
 <% end %>

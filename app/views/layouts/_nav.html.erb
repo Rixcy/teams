@@ -1,0 +1,31 @@
+<nav class="navbar has-shadow is-danger is-fixed-top" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <%= link_to root_url, class: 'navbar-item' do %>
+      <%= image_tag 'rixcy-white.svg', style: "width: 120px; max-height: 2.2rem !important" %>
+    <% end %>
+
+    <a
+      role="button"
+      class="navbar-burger has-text-white"
+      data-target="nav-menu"
+      aria-label="menu"
+      aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+    <div id="nav-menu" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="field is-grouped">
+            <p class="control">
+              <%= link_to 'New Team', new_team_path, class: 'button roboto' %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -17,7 +17,8 @@ document.addEventListener('turbolinks:load', () => {
   const element = document.getElementById("team-form")
 
   if (element != null) {
-    const team = JSON.parse(element.dataset.team)
+    let id = element.dataset.id
+    let team = JSON.parse(element.dataset.team)
     const players_attributes = JSON.parse(element.dataset.playersAttributes)
     players_attributes.forEach(function(player) { player._destroy = null })
     team.players_attributes = players_attributes
@@ -25,7 +26,7 @@ document.addEventListener('turbolinks:load', () => {
     const app = new Vue({
       el: element,
       data: function() {
-        return { team: team }
+        return { id: id, team: team }
       },
       methods: {
         addPlayer: function() {
@@ -52,14 +53,14 @@ document.addEventListener('turbolinks:load', () => {
         },
 
         saveTeam: function() {
-          if (this.team.id == null) {
+          if (this.id == null) {
             this.$http.post('/teams', { team: this.team }).then(response => {
               Turbolinks.visit(`/teams/${response.body.id}`)
             }, response => {
               console.log(response)
             })
           } else {
-            this.$http.put(`/teams/${this.team.id}`, { team: this.team }).then(response => {
+            this.$http.put(`/teams/${this.id}`, { team: this.team }).then(response => {
               Turbolinks.visit(`/teams/${response.body.id}`)
             }, response => {
               console.log(response)
